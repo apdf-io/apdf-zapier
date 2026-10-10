@@ -35,5 +35,6 @@
   },
   "bugs": {
     "url": "https://github.com/apdf-io/apdf-zapier/issues"
-  }
+  },
+  "license": "MIT"
 }
