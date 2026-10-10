@@ -21,9 +21,10 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 
 - Documents: create, archive, unarchive, make public, make private, delete.
 - Tracking links: create, activate, deactivate, delete.
-- PDF: create from HTML, convert Office documents, merge, split, compress, convert to images,
-  extract, delete and rotate pages, overlay, underlay, extract and search text (with and without
-  OCR), make searchable with OCR, add and remove a password, read metadata.
+- PDF: create from HTML, convert Office documents, merge (optionally some pages of each file),
+  split, compress, convert to images, extract, delete and rotate pages, overlay, underlay,
+  extract and search text (with and without OCR), make searchable with OCR, add and remove a
+  password, read metadata.
 
 **Searches**
 
@@ -33,11 +34,12 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 ## How it works
 
 - **Authentication** is an Apdf API token, sent as a bearer token. A token belongs to one
-  workspace.
+  workspace. Connecting calls `GET /me`, and the connection is labelled with the token
+  user's email.
 - **Reader event triggers are REST hooks.** Turning a Zap on creates an Apdf automation whose
   webhook is the Zap's hook URL; turning it off deletes the automation. Apdf evaluates the
-  document filter and the conditions before it calls Zapier. Automations need a Pro or Business
-  plan, so on Hobby the Zap fails to turn on with an upgrade message. Samples in the Zap editor
+  document filter and the conditions before it calls Zapier. Automations need a paid plan
+  (Pro and up), so on Hobby the Zap fails to turn on with an upgrade message. Samples in the Zap editor
   come from the workspace's recent automation runs, with a static sample as the fallback.
 - **PDF actions always run as Apdf jobs.** A live Zap passes Zapier's callback URL as the job's
   `webhook_url` and waits until Apdf posts the finished job back (`performResume`), so large
@@ -76,14 +78,14 @@ npm install
 cp .env.example .env    # then fill in the tokens
 ```
 
-| Command                                           | What it does                                               |
-| ------------------------------------------------- | ---------------------------------------------------------- |
-| `npm run build`                                   | Compile TypeScript into `dist/`                            |
-| `npm test`                                        | Build, then run the whole test suite                       |
-| `npm run lint`                                    | Check formatting and types, tests included                 |
-| `npm run format`                                  | Format everything with Prettier                            |
-| `npx zapier-platform validate`                    | Zapier's schema and publishing checks                      |
-| `npx zapier-platform invoke trigger documentList` | Run one step locally with `authData_api_token` from `.env` |
+| Command                                           | What it does                                                                             |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `npm run build`                                   | Compile TypeScript into `dist/`                                                          |
+| `npm test`                                        | Build, then run the whole test suite                                                     |
+| `npm run lint`                                    | Check formatting and types, tests included                                               |
+| `npm run format`                                  | Format everything with Prettier                                                          |
+| `npx zapier-platform validate`                    | Zapier's schema and publishing checks                                                    |
+| `npx zapier-platform invoke trigger documentList` | Run one step locally with `authData_api_token` from `.env`; runs `dist/`, so build first |
 
 ### Tests
 
