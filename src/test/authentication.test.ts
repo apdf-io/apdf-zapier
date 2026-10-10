@@ -3,10 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { invoke } from './support/zapier.js';
 
 describe('authentication', () => {
-  it('accepts a valid API token', async () => {
-    const response = await invoke('authentication.test');
+  it('accepts a valid API token and reports the account it acts as', async () => {
+    const account = await invoke('authentication.test');
 
-    expect(response.status).toBe(200);
+    expect(account).toMatchObject({
+      user: { email: 'zapier-pro@zapier.local' },
+      workspace: { handle: 'zapier-pro', plan: { name: 'Pro' } },
+    });
   });
 
   it('expires the connection when Apdf rejects the token', async () => {

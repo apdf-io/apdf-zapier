@@ -1,3 +1,14 @@
+/** Who an API token acts as: its user and the workspace it belongs to. */
+export type Account = {
+  user: { email: string; name: string | null };
+  workspace: {
+    id: string;
+    handle: string | null;
+    name: string | null;
+    plan: { name: string; tracked_documents: number | null; trial_ends_at: string | null };
+  };
+};
+
 /** A tracked document, as the Apdf API returns it. */
 export type Document = {
   doc_id: string;

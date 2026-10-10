@@ -1,11 +1,12 @@
 import type { Authentication, Bundle, ZObject } from 'zapier-platform-core';
 
-import { request } from './lib/api.js';
+import { fetchData } from './lib/api.js';
+import type { Account } from './lib/types.js';
 
 /**
- * Prove the token works by listing a single document, which every token of a workspace may do.
+ * Prove the token works by asking Apdf who it acts as, which also names the connection.
  */
-const test = (z: ZObject, bundle: Bundle) => request(z, 'GET', '/docs', { params: { per_page: 1 } });
+const test = (z: ZObject, bundle: Bundle) => fetchData<Account>(z, 'GET', '/me');
 
 export default {
   type: 'custom',
@@ -20,4 +21,5 @@ export default {
     },
   ],
   test,
+  connectionLabel: '{{user.email}}',
 } satisfies Authentication;
