@@ -27,5 +27,13 @@
   "type": "module",
   "engines": {
     "node": ">=22"
+  },
+  "homepage": "https://apdf.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apdf-io/apdf-zapier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/apdf-io/apdf-zapier/issues"
   }
 }
