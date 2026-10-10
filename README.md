@@ -109,7 +109,7 @@ retried. A full run takes a couple of minutes.
 npx zapier-platform login
 npx zapier-platform register "Apdf"   # once, creates the integration on Zapier
 npx zapier-platform push              # uploads the version in package.json
-npx zapier-platform promote 0.1.0     # makes a version the public one, once published
+npx zapier-platform promote 1.0.0     # makes a version the public one, once published
 ```
 
 Never set `APDF_BASE_URL` on Zapier; without it the integration talks to `https://apdf.io/api`.
