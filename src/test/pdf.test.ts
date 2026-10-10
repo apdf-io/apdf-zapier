@@ -77,6 +77,15 @@ describe('PDF operations in the Zap editor', () => {
     await expect(runSample(key, inputData())).resolves.toEqual(producedFile(details));
   });
 
+  it('merges only the chosen pages of each file', async () => {
+    const result = await runSample('mergePdfs', {
+      files: [server.fileUrl('three-pages.pdf'), server.fileUrl('three-pages.pdf'), server.fileUrl('one-page.pdf')],
+      pages: ['1', '2-z'],
+    });
+
+    expect(result).toEqual(producedFile({ pages: 4 }));
+  });
+
   it('splits a PDF into several files', async () => {
     const result = await runSample('splitPdf', { file: server.fileUrl('three-pages.pdf'), pages: '1,2-3' });
 

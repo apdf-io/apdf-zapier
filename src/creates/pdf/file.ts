@@ -1,5 +1,5 @@
 import { definePdfOperation } from './operation.js';
-import { pagesField, pdfFileField } from './fields.js';
+import { PAGE_SYNTAX, pagesField, pdfFileField } from './fields.js';
 import {
   pageCountOutputFields,
   producedFile,
@@ -102,10 +102,21 @@ export const convertOfficeToPdf = definePdfOperation({
   outputFields: [...producedFileOutputFields, ...pageCountOutputFields],
 });
 
+/**
+ * Pair each file to merge with the page selection at the same position, if there is one.
+ */
+const mergeEntries = (files: unknown, pages: unknown): { file: unknown; pages?: unknown }[] => {
+  const selections = ([] as unknown[]).concat(pages ?? []);
+
+  return ([] as unknown[])
+    .concat(files)
+    .map((file, index) => (selections[index] ? { file, pages: selections[index] } : { file }));
+};
+
 export const mergePdfs = definePdfOperation({
   key: 'mergePdfs',
   label: 'Merge PDFs',
-  description: 'Joins several PDFs into one, in the order given.',
+  description: 'Joins several PDFs into one, in the order given, optionally taking only some pages of each.',
   path: '/pdf/file/merge',
   inputFields: [
     pdfFileField({
@@ -114,8 +125,14 @@ export const mergePdfs = definePdfOperation({
       list: true,
       helpText: 'The PDFs to join, in order. Map files from earlier steps, or enter public URLs.',
     }),
+    {
+      key: 'pages',
+      label: 'Pages per File',
+      list: true,
+      helpText: `Optional. Which pages to take from each file, in the same order as the files: the first entry is for the first file, and so on. Use \`1-z\` for all pages of a file; files without an entry are taken whole. ${PAGE_SYNTAX}`,
+    },
   ],
-  body: ({ files, ...rest }) => ({ ...rest, files: ([] as unknown[]).concat(files).map((file) => ({ file })) }),
+  body: ({ files, pages, ...rest }) => ({ ...rest, files: mergeEntries(files, pages) }),
   result: producedFile,
   sample: producedFileSample({ pages: 9, size: 612388 }),
   outputFields: [...producedFileOutputFields, ...pageCountOutputFields],
