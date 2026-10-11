@@ -39,19 +39,20 @@ export const conditionFields: Record<ConditionType, PlainInputField> = {
     key: 'total_reading_time',
     label: 'Minimum Total Reading Time (Seconds)',
     type: 'integer',
-    helpText: 'Only trigger when the reader has spent at least this long in the document.',
+    helpText:
+      "Only trigger when the reader has spent at least this long reading the document during this visit, across all pages. A page's time counts once they move on to another page or close the document; time with the tab in the background doesn't count.",
   },
   pages_viewed: {
     key: 'pages_viewed',
     label: 'Minimum Pages Viewed',
     type: 'integer',
-    helpText: 'Only trigger when the reader has opened at least this many different pages.',
+    helpText: 'Only trigger when the reader has opened at least this many different pages during this visit.',
   },
   completion_rate: {
     key: 'completion_rate',
     label: 'Minimum Completion Rate (%)',
     type: 'integer',
-    helpText: 'Only trigger when the reader has read at least this share of the document.',
+    helpText: "Only trigger when the reader has viewed at least this share of the document's pages during this visit.",
   },
 };
 

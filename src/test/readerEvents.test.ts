@@ -116,6 +116,19 @@ describe('reader event triggers', () => {
     expect(found.session).toMatchObject({ session_id: session.id, recipient: { name: 'Jane Doe' } });
   });
 
+  it('builds the sample around a real document when there is no recent event', async () => {
+    const [watched] = await invoke('triggers.documentPrinted.operation.performList', {
+      inputData: { doc_ids: [document.docId] },
+    });
+    const [newest] = await invoke('triggers.documentPrinted.operation.performList');
+
+    expect(watched).toMatchObject({
+      document: { doc_id: document.docId, name: 'Zapier test: reader events', file_pages: 3 },
+      trigger: { matched_event: 'document:print' },
+    });
+    expect(newest.document.doc_id).toBe(document.docId);
+  });
+
   it('unsubscribes quietly when the automation is already gone', async () => {
     await expect(
       invoke('triggers.documentOpened.operation.performUnsubscribe', {
