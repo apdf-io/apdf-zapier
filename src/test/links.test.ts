@@ -52,6 +52,15 @@ describe('tracking links', () => {
     expect(activated.is_active).toBe(true);
   });
 
+  it('creates a link without an email when the email is left blank', async () => {
+    const link = await invoke('creates.createTrackingLink.operation.perform', {
+      inputData: { doc_id: document.docId, name: 'John Roe', email: '' },
+    });
+
+    expect(link).toMatchObject({ token: expect.any(String), name: 'John Roe' });
+    expect(link.email).toBeFalsy();
+  });
+
   it('deletes a link', async () => {
     const deleted = await invoke('creates.deleteTrackingLink.operation.perform', withLink());
 

@@ -77,6 +77,37 @@ describe('PDF operations in the Zap editor', () => {
     await expect(runSample(key, inputData())).resolves.toEqual(producedFile(details));
   });
 
+  it('ignores optional fields left blank, as Zapier sends them', async () => {
+    const result = await runSample('convertPdfToImages', {
+      file: server.fileUrl('one-page.pdf'),
+      image_type: 'png',
+      color_mode: '',
+      dpi: '',
+      pages: '',
+    });
+
+    expect(result.count).toBe(1);
+  });
+
+  it('adds only the owner password when the user password is blank', async () => {
+    const result = await runSample('addPdfPassword', {
+      file: server.fileUrl('three-pages.pdf'),
+      owner_code: 'owner-1',
+      user_code: '',
+    });
+
+    expect(result).toEqual(producedFile());
+  });
+
+  it('keeps each page selection with its file when one is left blank', async () => {
+    const result = await runSample('mergePdfs', {
+      files: [server.fileUrl('three-pages.pdf'), server.fileUrl('three-pages.pdf')],
+      pages: ['', '1'],
+    });
+
+    expect(result).toEqual(producedFile({ pages: 4 }));
+  });
+
   it('merges only the chosen pages of each file', async () => {
     const result = await runSample('mergePdfs', {
       files: [server.fileUrl('three-pages.pdf'), server.fileUrl('three-pages.pdf'), server.fileUrl('one-page.pdf')],

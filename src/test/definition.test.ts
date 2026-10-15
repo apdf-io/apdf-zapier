@@ -1,6 +1,7 @@
 import type { Bundle } from 'zapier-platform-core';
 import { describe, expect, it } from 'vitest';
 
+import { withoutEmptyValues } from '../lib/api.js';
 import { readerEvents } from '../lib/events.js';
 import { automationBody } from '../triggers/readerEvent.js';
 import { App } from './support/zapier.js';
@@ -34,6 +35,10 @@ describe('the app definition', () => {
     for (const dynamic of dropdowns) {
       expect(App.triggers).toHaveProperty(String(dynamic).split('.')[0] ?? '');
     }
+  });
+
+  it('leaves blank input data to the app instead of Zapier', () => {
+    expect(App.flags?.cleanInputData).toBe(false);
   });
 
   it('pairs the tracking link search with its create', () => {
@@ -71,5 +76,25 @@ describe('automationBody', () => {
     const documentOpened = readerEvents.find((readerEvent) => readerEvent.key === 'documentOpened')!;
 
     expect(automationBody(documentOpened, bundle({ page_number: 2 }))).not.toHaveProperty('conditions');
+  });
+});
+
+describe('withoutEmptyValues', () => {
+  it('drops blank values at every depth and keeps everything else', () => {
+    expect(
+      withoutEmptyValues({
+        file: 'https://example.com/a.pdf',
+        user_password: '',
+        dpi: null,
+        pages: [],
+        options: {},
+        async: false,
+        scale: 0,
+        rotations: [
+          { angle: '90', pages: '' },
+          { angle: '', pages: '' },
+        ],
+      }),
+    ).toEqual({ file: 'https://example.com/a.pdf', async: false, scale: 0, rotations: [{ angle: '90' }] });
   });
 });

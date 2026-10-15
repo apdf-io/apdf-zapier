@@ -24,6 +24,10 @@ export default defineApp({
   version: packageJson.version,
   platformVersion: zapier.version,
 
+  // Blank optional fields are dropped per request instead (see withoutEmptyValues), so list
+  // fields keep their positions, such as the page selection paired with each file to merge.
+  flags: { cleanInputData: false },
+
   authentication,
   beforeRequest: [...befores],
   afterResponse: [...afters],

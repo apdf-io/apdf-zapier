@@ -28,6 +28,37 @@ interface RequestOptions {
 }
 
 /**
+ * Whether a value carries nothing to send: null, undefined, an empty string, list or object.
+ */
+const isEmpty = (value: unknown): boolean =>
+  value === null ||
+  value === undefined ||
+  value === '' ||
+  (Array.isArray(value) && value.length === 0) ||
+  (typeof value === 'object' && !Array.isArray(value) && Object.keys(value as object).length === 0);
+
+/**
+ * Drop empty values from a request payload, at every depth. The app turns off Zapier's own
+ * cleaning of input data, so optional fields left blank are removed here instead, after any
+ * reshaping that depends on list positions.
+ */
+export const withoutEmptyValues = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value.map(withoutEmptyValues).filter((item) => !isEmpty(item));
+  }
+
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .map(([key, item]) => [key, withoutEmptyValues(item)])
+        .filter(([, item]) => !isEmpty(item)),
+    );
+  }
+
+  return value;
+};
+
+/**
  * Turn an API path into a full URL.
  */
 export const apiUrl = (path: string): string => `${API_BASE_URL}${path}`;
@@ -50,8 +81,8 @@ export const request = (
   z.request({
     method,
     url: apiUrl(path),
-    ...(params ? { params } : {}),
-    ...(body ? { body } : {}),
+    ...(params ? { params: withoutEmptyValues(params) as Record<string, unknown> } : {}),
+    ...(body ? { body: withoutEmptyValues(body) as Record<string, unknown> } : {}),
     ...(skipThrowForStatus ? { skipThrowForStatus } : {}),
   });
 
