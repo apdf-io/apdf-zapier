@@ -8,7 +8,7 @@ export const documentField = (overrides: Partial<PlainInputField> = {}): PlainIn
   key: 'doc_id',
   label: 'Document',
   required: true,
-  helpText: 'The tracked document. Pick one, or map a document ID from an earlier step.',
+  helpText: 'Pick a document, or map a document ID from an earlier step.',
   dynamic: 'documentList.id.name',
   search: 'findDocument.doc_id',
   ...overrides,
@@ -19,9 +19,9 @@ export const documentField = (overrides: Partial<PlainInputField> = {}): PlainIn
  */
 export const trackingLinkField = (): PlainInputField => ({
   key: 'token',
-  label: 'Tracking Link',
+  label: 'Tracking link',
   required: true,
-  helpText: 'The recipient link. Pick one, or map its token from an earlier step.',
+  helpText: 'Pick a tracking link, or map its token from an earlier step.',
   dynamic: 'trackingLinkList.id.name',
   dependsOn: ['doc_id'],
   search: 'findTrackingLink.token',
@@ -32,9 +32,9 @@ export const trackingLinkField = (): PlainInputField => ({
  */
 export const readingSessionField = (): PlainInputField => ({
   key: 'session_id',
-  label: 'Reading Session',
+  label: 'Reading session',
   required: true,
-  helpText: 'The session. Pick one, or map a session ID from a reader event.',
+  helpText: 'Pick a reading session, or map a session ID from a reader event.',
   dynamic: 'readingSessionList.id.name',
   dependsOn: ['doc_id'],
 });

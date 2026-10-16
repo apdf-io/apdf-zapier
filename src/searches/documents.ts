@@ -8,7 +8,7 @@ import { found } from './results.js';
 
 export const findDocument = defineSearch({
   key: 'findDocument',
-  noun: 'Document',
+  noun: 'document',
   display: {
     label: 'Find Document',
     description: 'Finds a document by its ID.',
@@ -17,7 +17,7 @@ export const findDocument = defineSearch({
     inputFields: [
       documentField({
         search: undefined,
-        helpText: 'Pick a document, or map a document ID, for example from a reader event.',
+        helpText: 'Pick a document, or map a document ID from an earlier step.',
       }),
     ],
     perform: (z: ZObject, bundle: Bundle) => found(fetchDataOrNull<Document>(z, 'GET', documentPath(bundle))),
@@ -28,10 +28,10 @@ export const findDocument = defineSearch({
 
 export const findDocumentAnalytics = defineSearch({
   key: 'findDocumentAnalytics',
-  noun: 'Document Analytics',
+  noun: 'document analytics',
   display: {
     label: 'Find Document Analytics',
-    description: 'Gets the engagement totals of a document: sessions, viewers, reading time, completion and more.',
+    description: 'Finds the engagement totals of a document: sessions, viewers, reading time, completion and more.',
   },
   operation: {
     inputFields: [documentField()],
@@ -69,10 +69,10 @@ export const findDocumentAnalytics = defineSearch({
 
 export const findReadingSession = defineSearch({
   key: 'findReadingSession',
-  noun: 'Reading Session',
+  noun: 'reading session',
   display: {
     label: 'Find Reading Session',
-    description: 'Gets one reading session of a document, with its time on every page and its events.',
+    description: 'Finds one reading session of a document, with its time on every page and its events.',
   },
   operation: {
     inputFields: [documentField(), readingSessionField()],
@@ -94,9 +94,32 @@ export const findReadingSession = defineSearch({
         os: 'macOS',
         created_at: '2026-10-09 14:28:11',
       },
-      metrics: { total_duration_ms: 184000, pages_viewed: 7, completion_pct: 58 },
+      metrics: {
+        total_duration_ms: 184000,
+        pages_viewed: 7,
+        total_pages: 12,
+        completion_pct: 58,
+        downloads: 0,
+        prints: 0,
+      },
       pages: [{ page: 1, duration_ms: 21000 }],
       events: [{ event: 'page:enter', page: 1 }],
     },
+    outputFields: [
+      { key: 'session__session_id', label: 'Session ID' },
+      { key: 'session__viewer_id', label: 'Viewer ID' },
+      { key: 'session__recipient__name', label: 'Recipient Name' },
+      { key: 'session__recipient__email', label: 'Recipient Email' },
+      { key: 'session__device_type', label: 'Device Type' },
+      { key: 'session__browser', label: 'Browser' },
+      { key: 'session__os', label: 'Operating System' },
+      { key: 'session__created_at', label: 'Started At' },
+      { key: 'metrics__total_duration_ms', label: 'Reading Time (ms)', type: 'integer' },
+      { key: 'metrics__pages_viewed', label: 'Pages Viewed', type: 'integer' },
+      { key: 'metrics__total_pages', label: 'Document Pages', type: 'integer' },
+      { key: 'metrics__completion_pct', label: 'Completion Rate (%)', type: 'integer' },
+      { key: 'metrics__downloads', label: 'Downloads', type: 'integer' },
+      { key: 'metrics__prints', label: 'Prints', type: 'integer' },
+    ],
   },
 });

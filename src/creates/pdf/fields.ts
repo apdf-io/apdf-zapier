@@ -10,7 +10,7 @@ export const PAGE_SYNTAX =
  */
 export const pdfFileField = (overrides: Partial<PlainInputField> = {}): PlainInputField => ({
   key: 'file',
-  label: 'PDF File',
+  label: 'PDF file',
   type: 'file',
   required: true,
   helpText: 'Map a PDF from an earlier step, or enter a public URL.',
@@ -32,20 +32,19 @@ export const pagesField = (purpose: string, overrides: Partial<PlainInputField> 
 export const searchFields: PlainInputField[] = [
   {
     key: 'text',
-    label: 'Search Text',
+    label: 'Search text',
     required: true,
-    helpText: 'The text to look for.',
   },
   {
     key: 'case',
-    label: 'Case Sensitive',
+    label: 'Case sensitive',
     type: 'boolean',
     default: 'false',
-    helpText: 'Whether capitalisation must match exactly.',
+    helpText: 'Whether capitalization must match exactly.',
   },
   {
     key: 'regex',
-    label: 'Regular Expression',
+    label: 'Regular expression',
     type: 'boolean',
     default: 'false',
     helpText: 'Whether the search text is a regular expression.',
@@ -67,25 +66,25 @@ export const layerFields = (layer: 'overlay' | 'underlay'): PlainInputField[] =>
     label: layerLabel(layer),
     helpText:
       layer === 'overlay'
-        ? 'The PDF stamped on top of the pages, such as a watermark. Map a file or enter a public URL.'
-        : 'The PDF placed behind the pages, such as letterhead. Map a file or enter a public URL.',
+        ? 'The PDF stamped on top of the pages, such as a watermark. Map a PDF from an earlier step, or enter a public URL.'
+        : 'The PDF placed behind the pages, such as letterhead. Map a PDF from an earlier step, or enter a public URL.',
   }),
   {
     key: 'from',
-    label: `Pages of the ${layerLabel(layer)}`,
+    label: `Pages of the ${layer} PDF`,
     required: false,
-    helpText: `Which pages of the ${layerLabel(layer)} to use, in order. Leave empty to use all of them. ${PAGE_SYNTAX}`,
+    helpText: `Which pages of the ${layer} PDF to use, in order. Leave empty to use all of them. ${PAGE_SYNTAX}`,
   },
   {
     key: 'to',
-    label: 'Target Pages',
+    label: 'Target pages',
     required: false,
     helpText: `Which pages of your PDF get the ${layer}. Leave empty for every page. ${PAGE_SYNTAX}`,
   },
   {
     key: 'repeat',
-    label: 'Repeat Pages',
+    label: 'Repeat pages',
     required: false,
-    helpText: `Pages of the ${layerLabel(layer)} to repeat once the ones above run out. ${PAGE_SYNTAX}`,
+    helpText: `Pages of the ${layer} PDF to repeat once the ones above run out. ${PAGE_SYNTAX}`,
   },
 ];

@@ -8,7 +8,7 @@ import { found } from './results.js';
 
 export const findTrackingLink = defineSearch({
   key: 'findTrackingLink',
-  noun: 'Tracking Link',
+  noun: 'tracking link',
   display: {
     label: 'Find Tracking Link',
     description: "Finds a document's tracking link by the recipient's email address.",
@@ -18,7 +18,7 @@ export const findTrackingLink = defineSearch({
       documentField(),
       {
         key: 'email',
-        label: 'Recipient Email',
+        label: 'Recipient email',
         required: true,
         helpText: 'The email address the link was created for. Case does not matter.',
       },

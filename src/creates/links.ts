@@ -13,7 +13,7 @@ const trackingLinkPath = (bundle: Bundle, suffix = ''): string =>
 
 export const createTrackingLink = defineCreate({
   key: 'createTrackingLink',
-  noun: 'Tracking Link',
+  noun: 'tracking link',
   display: {
     label: 'Create Tracking Link',
     description:
@@ -24,14 +24,14 @@ export const createTrackingLink = defineCreate({
       documentField(),
       {
         key: 'name',
-        label: 'Recipient Name',
+        label: 'Recipient name',
         required: true,
         helpText: 'Who the link is for. Every reader event from this link carries this name.',
       },
       {
         key: 'email',
-        label: 'Recipient Email',
-        helpText: 'Optional email address recorded alongside the name.',
+        label: 'Recipient email',
+        helpText: 'Recorded alongside the name.',
       },
     ],
     perform: (z: ZObject, bundle: Bundle) =>
@@ -49,7 +49,7 @@ export const createTrackingLink = defineCreate({
 const defineTrackingLinkAction = (key: string, label: string, description: string, suffix: string) =>
   defineCreate({
     key,
-    noun: 'Tracking Link',
+    noun: 'tracking link',
     display: { label, description },
     operation: {
       inputFields: [documentField(), trackingLinkField()],
@@ -69,16 +69,16 @@ export const activateTrackingLink = defineTrackingLinkAction(
 export const deactivateTrackingLink = defineTrackingLinkAction(
   'deactivateTrackingLink',
   'Deactivate Tracking Link',
-  'Stops the recipient opening the document through their link, without deleting it.',
+  'Stops the recipient from opening the document through their link, without deleting it.',
   '/deactivate',
 );
 
 export const deleteTrackingLink = defineCreate({
   key: 'deleteTrackingLink',
-  noun: 'Tracking Link',
+  noun: 'tracking link',
   display: {
     label: 'Delete Tracking Link',
-    description: 'Permanently deletes a tracking link.',
+    description: 'Deletes a tracking link permanently.',
   },
   operation: {
     inputFields: [documentField(), trackingLinkField()],

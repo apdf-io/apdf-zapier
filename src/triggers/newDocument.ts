@@ -6,10 +6,10 @@ import type { Document } from '../lib/types.js';
 
 export const newDocument = defineTrigger({
   key: 'newDocument',
-  noun: 'Document',
+  noun: 'document',
   display: {
     label: 'New Document',
-    description: 'Triggers when a document is added to your Apdf workspace.',
+    description: 'Triggers when a document is added to your workspace.',
   },
   operation: {
     type: 'polling',

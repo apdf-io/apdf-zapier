@@ -24,8 +24,8 @@ const defineListTrigger = <T>(
     key,
     noun,
     display: {
-      label: `List ${noun}s`,
-      description: `Lists ${noun.toLowerCase()}s for a dropdown.`,
+      label: `List ${noun.replace(/\b\w/gu, (letter) => letter.toUpperCase())}s`,
+      description: `Lists ${noun}s for a dropdown.`,
       hidden: true,
     },
     operation: {
@@ -53,7 +53,7 @@ const recipientLabel = (recipient: { name: string; email: string | null } | null
 
 export const documentList = defineListTrigger<Document>(
   'documentList',
-  'Document',
+  'document',
   () => '/docs',
   (document) => ({ id: document.doc_id, name: document.name }),
   { status: 'active' },
@@ -61,14 +61,14 @@ export const documentList = defineListTrigger<Document>(
 
 export const trackingLinkList = defineListTrigger<TrackingLink>(
   'trackingLinkList',
-  'Tracking Link',
+  'tracking link',
   (bundle) => documentPath(bundle, '/links'),
   (link) => ({ id: link.token, name: recipientLabel(link) }),
 );
 
 export const readingSessionList = defineListTrigger<ReadingSession>(
   'readingSessionList',
-  'Reading Session',
+  'reading session',
   (bundle) => documentPath(bundle, '/analytics/sessions'),
   (session) => ({ id: session.session_id, name: `${recipientLabel(session.recipient)} · ${session.created_at}` }),
 );

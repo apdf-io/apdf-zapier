@@ -24,33 +24,32 @@ export interface ReaderEvent {
 export const conditionFields: Record<ConditionType, PlainInputField> = {
   page_number: {
     key: 'page_number',
-    label: 'Page Number',
+    label: 'Page number',
     type: 'integer',
     helpText: 'Only trigger for this page.',
   },
   time_on_page: {
     key: 'time_on_page',
-    label: 'Minimum Time on Page (Seconds)',
+    label: 'Minimum time on page (seconds)',
     type: 'integer',
-    helpText:
-      'Only trigger once the reader has stayed on the page this long. Page Read is measured in 15-second steps.',
+    helpText: 'Only trigger when the reader has stayed on the page at least this long.',
   },
   total_reading_time: {
     key: 'total_reading_time',
-    label: 'Minimum Total Reading Time (Seconds)',
+    label: 'Minimum total reading time (seconds)',
     type: 'integer',
     helpText:
       "Only trigger when the reader has spent at least this long reading the document during this visit, across all pages. A page's time counts once they move on to another page or close the document; time with the tab in the background doesn't count.",
   },
   pages_viewed: {
     key: 'pages_viewed',
-    label: 'Minimum Pages Viewed',
+    label: 'Minimum pages viewed',
     type: 'integer',
     helpText: 'Only trigger when the reader has opened at least this many different pages during this visit.',
   },
   completion_rate: {
     key: 'completion_rate',
-    label: 'Minimum Completion Rate (%)',
+    label: 'Minimum completion rate (%)',
     type: 'integer',
     helpText: "Only trigger when the reader has viewed at least this share of the document's pages during this visit.",
   },

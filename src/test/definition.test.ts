@@ -37,6 +37,33 @@ describe('the app definition', () => {
     }
   });
 
+  it('follows the Zapier naming conventions for every visible step', () => {
+    const steps = [
+      ...Object.values(App.triggers ?? {}).map((step) => ({ step, verb: /^Triggers when /u })),
+      ...Object.values(App.searches ?? {}).map((step) => ({ step, verb: /^Finds /u })),
+      ...Object.values(App.creates ?? {}).map((step) => ({ step, verb: /^[A-Z][a-z-]+s\b/u })),
+    ].filter(({ step }) => !step.display.hidden);
+
+    for (const { step, verb } of steps) {
+      expect(step.display.description, step.key).toMatch(verb);
+      expect(step.display.description, step.key).toMatch(/\.$/u);
+      expect(step.display.description, step.key).not.toMatch(/apdf/iu);
+      expect(step.noun, step.key).toMatch(/^(PDF|[a-z ]+)$/u);
+
+      // Field labels are in sentence case; only acronyms such as PDF or HTML stay capitalized.
+      for (const field of (step.operation.inputFields ?? []).flatMap((field) =>
+        typeof field === 'object' ? [field, ...('children' in field ? (field.children ?? []) : [])] : [],
+      )) {
+        const laterWords = (field.label ?? '').split(' ').slice(1);
+
+        expect(
+          laterWords.filter((word) => /^[A-Z][a-z]/u.test(word)),
+          `${step.key}: ${field.label}`,
+        ).toEqual([]);
+      }
+    }
+  });
+
   it('leaves blank input data to the app instead of Zapier', () => {
     expect(App.flags?.cleanInputData).toBe(false);
   });

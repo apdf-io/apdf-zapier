@@ -7,19 +7,19 @@ import type { Document } from '../lib/types.js';
 
 export const createDocument = defineCreate({
   key: 'createDocument',
-  noun: 'Document',
+  noun: 'document',
   display: {
     label: 'Create Document',
-    description: 'Uploads a PDF to Apdf so it can be shared through tracking links and read in the hosted viewer.',
+    description: 'Creates a document from a PDF, ready to share through tracking links and the hosted viewer.',
   },
   operation: {
     inputFields: [
       {
         key: 'file',
-        label: 'PDF File',
+        label: 'PDF file',
         type: 'file',
         required: true,
-        helpText: 'The PDF to track. Map a file from an earlier step, or enter a public URL.',
+        helpText: 'Map a PDF from an earlier step, or enter a public URL.',
       },
       {
         key: 'name',
@@ -44,7 +44,7 @@ export const createDocument = defineCreate({
 const defineDocumentAction = (key: string, label: string, description: string, suffix: string) =>
   defineCreate({
     key,
-    noun: 'Document',
+    noun: 'document',
     display: { label, description },
     operation: {
       inputFields: [documentField()],
@@ -84,10 +84,10 @@ export const makeDocumentPrivate = defineDocumentAction(
 
 export const deleteDocument = defineCreate({
   key: 'deleteDocument',
-  noun: 'Document',
+  noun: 'document',
   display: {
     label: 'Delete Document',
-    description: 'Permanently deletes a document with its PDF file, tracking links, annotations and form submissions.',
+    description: 'Deletes a document permanently, with its PDF file, tracking links, annotations and form submissions.',
   },
   operation: {
     inputFields: [documentField()],

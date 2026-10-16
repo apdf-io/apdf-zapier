@@ -39,7 +39,7 @@ export const createPdfFromHtml = definePdfOperation({
     },
     {
       key: 'format',
-      label: 'Page Format',
+      label: 'Page format',
       group: 'layout',
       choices: Object.fromEntries(PAGE_FORMATS.map((format) => [format, format.toUpperCase()])),
       helpText: 'The paper size. Ignored when a width and height are set.',
@@ -60,10 +60,10 @@ export const createPdfFromHtml = definePdfOperation({
       helpText: 'The unit of the width, height and margins.',
     },
     layoutNumber('scale', 'Scale', 'Zoom applied while rendering, between 0.1 and 2.'),
-    layoutNumber('margin_top', 'Margin Top', 'Space above the content.'),
-    layoutNumber('margin_right', 'Margin Right', 'Space right of the content.'),
-    layoutNumber('margin_bottom', 'Margin Bottom', 'Space below the content.'),
-    layoutNumber('margin_left', 'Margin Left', 'Space left of the content.'),
+    layoutNumber('margin_top', 'Margin top', 'Space above the content.'),
+    layoutNumber('margin_right', 'Margin right', 'Space right of the content.'),
+    layoutNumber('margin_bottom', 'Margin bottom', 'Space below the content.'),
+    layoutNumber('margin_left', 'Margin left', 'Space left of the content.'),
     {
       key: 'header',
       label: 'Header HTML',
@@ -92,7 +92,7 @@ export const convertOfficeToPdf = definePdfOperation({
   path: '/pdf/file/convert',
   inputFields: [
     pdfFileField({
-      label: 'Office File',
+      label: 'Office file',
       helpText:
         'A docx, doc, xlsx, xls, pptx, ppt, odt, ods, odp or rtf file. Map a file from an earlier step, or enter a public URL.',
     }),
@@ -121,15 +121,15 @@ export const mergePdfs = definePdfOperation({
   inputFields: [
     pdfFileField({
       key: 'files',
-      label: 'PDF Files',
+      label: 'PDF files',
       list: true,
       helpText: 'The PDFs to join, in order. Map files from earlier steps, or enter public URLs.',
     }),
     {
       key: 'pages',
-      label: 'Pages per File',
+      label: 'Pages per file',
       list: true,
-      helpText: `Optional. Which pages to take from each file, in the same order as the files: the first entry is for the first file, and so on. Use \`1-z\` for all pages of a file; files without an entry are taken whole. ${PAGE_SYNTAX}`,
+      helpText: `Which pages to take from each file, in the same order as the files: the first entry is for the first file, and so on. Use \`1-z\` for all pages of a file; files without an entry are taken whole. ${PAGE_SYNTAX}`,
     },
   ],
   body: ({ files, pages, ...rest }) => ({ ...rest, files: mergeEntries(files, pages) }),
@@ -185,14 +185,14 @@ export const convertPdfToImages = definePdfOperation({
     pdfFileField(),
     {
       key: 'image_type',
-      label: 'Image Type',
+      label: 'Image type',
       required: true,
       default: 'png',
       choices: { png: 'PNG', jpeg: 'JPEG', jpegcmyk: 'JPEG (CMYK)', tiff: 'TIFF' },
     },
     {
       key: 'color_mode',
-      label: 'Color Mode',
+      label: 'Color mode',
       choices: { color: 'Color', gray: 'Grayscale', mono: 'Monochrome' },
     },
     { key: 'dpi', label: 'Resolution (DPI)', type: 'integer', helpText: 'Up to 300. Defaults to 150.' },

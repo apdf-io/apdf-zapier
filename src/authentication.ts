@@ -13,7 +13,7 @@ export default {
   fields: [
     {
       key: 'api_token',
-      label: 'API Token',
+      label: 'API token',
       type: 'password',
       required: true,
       helpText:

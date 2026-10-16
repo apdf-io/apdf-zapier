@@ -120,7 +120,7 @@ const sampleSourceDocument = async (z: ZObject, docIds: string[]): Promise<Reade
 export const defineReaderEventTrigger = (readerEvent: ReaderEvent) =>
   defineTrigger({
     key: readerEvent.key,
-    noun: 'Reader Event',
+    noun: 'reader event',
     display: {
       label: readerEvent.label,
       description: readerEvent.description,

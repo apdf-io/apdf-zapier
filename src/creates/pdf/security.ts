@@ -17,14 +17,14 @@ export const addPdfPassword = definePdfOperation({
     pdfFileField(),
     {
       key: 'owner_code',
-      label: 'Owner Password',
+      label: 'Owner password',
       type: 'password',
       required: true,
       helpText: 'Grants full control over the PDF, including changing its permissions.',
     },
     {
       key: 'user_code',
-      label: 'User Password',
+      label: 'User password',
       type: 'password',
       helpText: 'Needed to open the PDF. Leave empty to let anyone open it.',
     },
