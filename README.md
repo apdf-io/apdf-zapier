@@ -23,8 +23,9 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 - Tracking links: create, activate, deactivate, delete.
 - PDF: create from HTML, convert Office documents, merge (optionally some pages of each file),
   split, compress, convert to images, extract, delete and rotate pages, overlay, underlay,
-  extract and search text (with and without OCR), make searchable with OCR, add and remove a
-  password, read metadata.
+  extract and search text (with and without OCR), make searchable with OCR, read and fill
+  forms, render forms as images with numbered fields for AI steps, add and remove a password,
+  read metadata.
 
 **Searches**
 

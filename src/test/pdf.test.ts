@@ -176,6 +176,48 @@ describe('PDF operations in the Zap editor', () => {
     expect(result).toMatchObject({ job_id: expect.any(String), pages: 3, encrypted: false });
   });
 
+  it('reads the form fields', async () => {
+    const result = await runSample('getPdfFormFields', { file: server.fileUrl('form-fields.pdf') });
+
+    expect(result.fields).toContainEqual(expect.objectContaining({ name: 'name', type: 'text', page: 1 }));
+    expect(result.fields).toContainEqual(
+      expect.objectContaining({ name: 'size', type: 'radio', options: ['S', 'M', 'L'] }),
+    );
+  });
+
+  it('fills the form fields, keeping those with a blank value', async () => {
+    const result = await runSample('fillPdfForm', {
+      file: server.fileUrl('form-fields.pdf'),
+      fields: [
+        { name: 'name', value: 'Ada Lovelace' },
+        { name: 'newsletter', value: 'true' },
+        { name: 'company', value: '' },
+      ],
+      flatten: 'false',
+    });
+
+    expect(result).toEqual(producedFile({ calculations: { updated: [], unsupported: [] } }));
+
+    const filled = await runSample('getPdfFormFields', { file: result.file_url });
+    const values = Object.fromEntries(
+      filled.fields.map((field: { name: string; value: unknown }) => [field.name, field.value]),
+    );
+
+    expect(values).toMatchObject({ name: 'Ada Lovelace', newsletter: true });
+  });
+
+  it('renders the form pages with their fields numbered, and lists the numbers as text', async () => {
+    const result = await runSample('visualizePdfForm', { file: server.fileUrl('form-fields.pdf'), dpi: 50, pages: '' });
+
+    expect(result.count).toBe(1);
+    expect(result.pages[0]).toMatchObject({ page: 1, file: expect.stringMatching(/^stashed:.+\.png$/) });
+    expect(result.pages[0]).not.toHaveProperty('fields');
+    expect(result.fields[0]).toEqual({ page: 1, number: 1, name: 'name', type: 'text' });
+    expect(result.legend.split('\n')).toHaveLength(result.fields.length);
+    expect(result.legend).toMatch(/^1: name \(text\)\n/);
+    expect(result.legend).toContain(': size = M (radio)');
+  });
+
   it('reports why a job could not start', async () => {
     await expect(
       runSample('extractPdfPages', { file: server.fileUrl('three-pages.pdf'), pages: 'abc' }),
