@@ -1,6 +1,6 @@
 {
   "name": "apdf-zapier",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Zapier integration for Apdf — PDF tracking links, reader analytics and PDF processing",
   "scripts": {
     "test": "npm run build && vitest --run",
