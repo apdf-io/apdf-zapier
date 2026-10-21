@@ -1,4 +1,4 @@
-import type { Document, TrackingLink } from './types.js';
+import type { Annotation, Document, TrackingLink } from './types.js';
 
 /**
  * Zapier expects every trigger result to carry an "id"; a document's own key is doc_id.
@@ -46,5 +46,33 @@ export const trackingLinkOutputFields = [
   { key: 'url', label: 'Tracking URL' },
   { key: 'is_active', label: 'Is Active', type: 'boolean' as const },
   { key: 'last_viewed_at', label: 'Last Viewed At', type: 'datetime' as const },
+  { key: 'created_at', label: 'Created At', type: 'datetime' as const },
+];
+
+export const annotationSample: Annotation = {
+  annotation_id: 'annot_1776805002364_5uxvr3fcx',
+  page: 4,
+  type: 'highlight',
+  creator_id: 'OLHe7I5rXTBz',
+  recipient: { name: 'Jane Doe', email: 'jane@contoso.com' },
+  annotated_text: 'Annual licence: $24,000',
+  comment_author: 'Jane Doe',
+  comment_text: 'Can we get volume pricing here?',
+  replies: [{ author: 'Sam Lee', text: 'Yes, from 25 seats.', created_at: '2026-10-09T16:20:41.000000Z' }],
+  created_at: '2026-10-09T16:18:02.000000Z',
+};
+
+export const annotationOutputFields = [
+  { key: 'annotation_id', label: 'Annotation ID' },
+  { key: 'page', label: 'Page', type: 'integer' as const },
+  { key: 'type', label: 'Annotation Type' },
+  { key: 'annotated_text', label: 'Annotated Text' },
+  { key: 'comment_author', label: 'Comment Author' },
+  { key: 'comment_text', label: 'Comment' },
+  { key: 'replies[]author', label: 'Reply Author' },
+  { key: 'replies[]text', label: 'Reply' },
+  { key: 'replies[]created_at', label: 'Reply Created At', type: 'datetime' as const },
+  { key: 'recipient__name', label: 'Recipient Name' },
+  { key: 'recipient__email', label: 'Recipient Email' },
   { key: 'created_at', label: 'Created At', type: 'datetime' as const },
 ];

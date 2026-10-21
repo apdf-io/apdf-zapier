@@ -84,3 +84,30 @@ export const simulateReader = async (document: TrackedDocument, event: string, p
     throw new Error(`The viewer endpoint answered ${response.status}: ${await response.text()}`);
   }
 };
+
+/**
+ * Play a reader highlighting a passage on the first page, the way the hosted viewer saves it.
+ * The comment is left out unless given, so a test can start the thread itself.
+ */
+export const simulateAnnotation = async (document: TrackedDocument, comment = ''): Promise<string> => {
+  const annotationId = `annot_${randomUUID()}`;
+  const response = await fetchApdf(`/viewer/docs/${document.docId}/annotations`, {
+    method: 'POST',
+    body: JSON.stringify({
+      annotation_id: annotationId,
+      annotation_object: { id: annotationId, type: 'highlight', comment, author: comment ? 'Jane Doe' : '' },
+      page: 1,
+      type: 'highlight',
+      creator_id: randomUUID(),
+      annotated_text: 'Annual licence: $24,000',
+      comment_author: comment ? 'Jane Doe' : null,
+      comment_text: comment || null,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`The viewer endpoint answered ${response.status}: ${await response.text()}`);
+  }
+
+  return annotationId;
+};

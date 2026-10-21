@@ -2,7 +2,7 @@ import { defineTrigger, type Bundle, type ZObject } from 'zapier-platform-core';
 
 import { documentPath } from '../fields/records.js';
 import { fetchPage } from '../lib/api.js';
-import type { Document, ReadingSession, TrackingLink } from '../lib/types.js';
+import type { Annotation, Document, ReadingSession, TrackingLink } from '../lib/types.js';
 
 /** A dropdown choice: what is stored, and what the user reads. */
 interface Choice {
@@ -71,4 +71,24 @@ export const readingSessionList = defineListTrigger<ReadingSession>(
   'reading session',
   (bundle) => documentPath(bundle, '/analytics/sessions'),
   (session) => ({ id: session.session_id, name: `${recipientLabel(session.recipient)} · ${session.created_at}` }),
+);
+
+/** How much of the marked text or comment an annotation's dropdown label shows. */
+const ANNOTATION_LABEL_LENGTH = 60;
+
+/**
+ * Describe an annotation by its page and what it marks, falling back to its comment or type.
+ */
+const annotationLabel = (annotation: Annotation): string => {
+  const text = annotation.annotated_text || annotation.comment_text || annotation.type;
+  const shortened = text.length > ANNOTATION_LABEL_LENGTH ? `${text.slice(0, ANNOTATION_LABEL_LENGTH)}…` : text;
+
+  return `Page ${annotation.page} · ${shortened}`;
+};
+
+export const annotationList = defineListTrigger<Annotation>(
+  'annotationList',
+  'annotation',
+  (bundle) => documentPath(bundle, '/annotations'),
+  (annotation) => ({ id: annotation.annotation_id, name: annotationLabel(annotation) }),
 );

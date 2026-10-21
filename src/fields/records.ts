@@ -40,6 +40,18 @@ export const readingSessionField = (): PlainInputField => ({
 });
 
 /**
+ * The annotation picker. It lists the annotations of the chosen document by page and marked text.
+ */
+export const annotationField = (): PlainInputField => ({
+  key: 'annotation_id',
+  label: 'Annotation',
+  required: true,
+  helpText: 'Pick an annotation, or map an annotation ID from an annotation trigger.',
+  dynamic: 'annotationList.id.name',
+  dependsOn: ['doc_id'],
+});
+
+/**
  * The path of the document the step was set up for.
  */
 export const documentPath = (bundle: Bundle, suffix = ''): string =>

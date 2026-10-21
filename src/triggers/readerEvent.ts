@@ -9,8 +9,9 @@ import type { Automation, AutomationExecution, Document, ReaderEventPayload } fr
 /** How many recent events to offer as samples in the Zap editor. */
 const SAMPLE_COUNT = 3;
 
-/** Output fields for the event data any reader event can carry. */
-const EVENT_DATA_FIELDS: Record<string, PlainOutputField> = {
+/** Output fields for the event data any reader event can carry; a list of replies maps to line items. */
+const EVENT_DATA_FIELDS: Record<string, PlainOutputField | PlainOutputField[]> = {
+  annotation_id: { key: 'event__data__annotation_id', label: 'Annotation ID' },
   page: { key: 'event__data__page', label: 'Page', type: 'integer' },
   duration_ms: { key: 'event__data__duration_ms', label: 'Time on Page (ms)', type: 'integer' },
   text: { key: 'event__data__text', label: 'Text' },
@@ -20,6 +21,12 @@ const EVENT_DATA_FIELDS: Record<string, PlainOutputField> = {
   comment_text: { key: 'event__data__comment_text', label: 'Comment' },
   comment_author: { key: 'event__data__comment_author', label: 'Comment Author' },
   annotated_text: { key: 'event__data__annotated_text', label: 'Annotated Text' },
+  replies: [
+    { key: 'event__data__replies[]author', label: 'Reply Author' },
+    { key: 'event__data__replies[]text', label: 'Reply' },
+    { key: 'event__data__replies[]created_at', label: 'Reply Created At', type: 'datetime' },
+  ],
+  changes: { key: 'event__data__changes', label: 'Changed Fields', list: true },
 };
 
 /**

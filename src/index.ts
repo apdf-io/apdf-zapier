@@ -3,6 +3,7 @@ import zapier, { defineApp } from 'zapier-platform-core';
 import packageJson from '../package.json' with { type: 'json' };
 
 import authentication from './authentication.js';
+import * as annotationActions from './creates/annotations.js';
 import * as documentActions from './creates/documents.js';
 import * as linkActions from './creates/links.js';
 import * as pdfActions from './creates/pdf/index.js';
@@ -34,7 +35,12 @@ export default defineApp({
 
   triggers: byKey([...readerEvents.map(defineReaderEventTrigger), newDocument, ...Object.values(listTriggers)]),
 
-  creates: byKey([...Object.values(documentActions), ...Object.values(linkActions), ...Object.values(pdfActions)]),
+  creates: byKey([
+    ...Object.values(documentActions),
+    ...Object.values(linkActions),
+    ...Object.values(annotationActions),
+    ...Object.values(pdfActions),
+  ]),
 
   searches: byKey([...Object.values(documentSearches), ...Object.values(linkSearches)]),
 

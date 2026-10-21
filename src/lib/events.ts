@@ -143,25 +143,34 @@ export const readerEvents: ReaderEvent[] = [
     description: 'Triggers when a reader highlights, marks up or comments on a tracked document. Fires every time.',
     conditions: PAGE_CONDITIONS,
     sampleData: {
+      annotation_id: 'annot_1776805002364_5uxvr3fcx',
       page: 4,
       type: 'highlight',
       comment_text: 'Can we get volume pricing here?',
       comment_author: 'Jane Doe',
       annotated_text: 'Annual licence: $24,000',
+      replies: [],
+      changes: [],
     },
   },
   {
     key: 'annotationUpdated',
     event: 'annotation:update',
     label: 'Annotation Updated',
-    description: 'Triggers when a reader changes an annotation on a tracked document. Fires every time.',
+    description:
+      'Triggers when a reader changes an annotation on a tracked document or replies to its comment. Fires every time.',
     conditions: PAGE_CONDITIONS,
     sampleData: {
+      annotation_id: 'annot_1776805002364_5uxvr3fcx',
       page: 4,
       type: 'highlight',
-      comment_text: 'Can we get volume pricing for 50 seats?',
+      comment_text: 'Can we get volume pricing here?',
       comment_author: 'Jane Doe',
       annotated_text: 'Annual licence: $24,000',
+      replies: [
+        { author: 'Jane Doe', text: 'We would start with 50 seats.', created_at: '2026-10-09T16:20:41.000000Z' },
+      ],
+      changes: ['replies'],
     },
   },
   {
@@ -170,6 +179,6 @@ export const readerEvents: ReaderEvent[] = [
     label: 'Annotation Deleted',
     description: 'Triggers when a reader removes an annotation from a tracked document. Fires every time.',
     conditions: PAGE_CONDITIONS,
-    sampleData: { page: 4 },
+    sampleData: { annotation_id: 'annot_1776805002364_5uxvr3fcx', page: 4 },
   },
 ];

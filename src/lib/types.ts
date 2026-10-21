@@ -33,6 +33,27 @@ export type TrackingLink = {
   created_at: string;
 };
 
+/** A reply in the comment thread of an annotation. */
+export type AnnotationReply = {
+  author: string | null;
+  text: string;
+  created_at: string;
+};
+
+/** A reader's annotation with its comment thread. */
+export type Annotation = {
+  annotation_id: string;
+  page: number;
+  type: string;
+  creator_id: string;
+  recipient: { name: string; email: string | null } | null;
+  annotated_text: string | null;
+  comment_author: string | null;
+  comment_text: string | null;
+  replies: AnnotationReply[];
+  created_at: string;
+};
+
 /** An automation, of which the triggers only need the ID. */
 export type Automation = {
   id: string;
