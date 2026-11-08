@@ -3,6 +3,7 @@ import { defineTrigger, type Bundle, type PlainOutputField, type ZObject } from 
 import { documentField } from '../fields/records.js';
 import { fetchData, fetchDataOrNull, fetchPage, request } from '../lib/api.js';
 import { ensureSuccessful } from '../lib/errors.js';
+import { stashFile } from '../lib/files.js';
 import { conditionFields, type ReaderEvent } from '../lib/events.js';
 import type { Automation, AutomationExecution, Document, ReaderEventPayload } from '../lib/types.js';
 
@@ -27,6 +28,22 @@ const EVENT_DATA_FIELDS: Record<string, PlainOutputField | PlainOutputField[]> =
     { key: 'event__data__replies[]created_at', label: 'Reply Created At', type: 'datetime' },
   ],
   changes: { key: 'event__data__changes', label: 'Changed Fields', list: true },
+  request_id: { key: 'event__data__request_id', label: 'Signature Request ID' },
+  role: { key: 'event__data__role', label: 'Signer Role' },
+  name: { key: 'event__data__name', label: 'Signer Name' },
+  email: { key: 'event__data__email', label: 'Signer Email' },
+  signed_at: { key: 'event__data__signed_at', label: 'Signed At', type: 'datetime' },
+  declined_at: { key: 'event__data__declined_at', label: 'Declined At', type: 'datetime' },
+  decline_reason: { key: 'event__data__decline_reason', label: 'Decline Reason' },
+  completed_at: { key: 'event__data__completed_at', label: 'Completed At', type: 'datetime' },
+  signers: [
+    { key: 'event__data__signers[]role', label: 'Signer Role' },
+    { key: 'event__data__signers[]name', label: 'Signer Name' },
+    { key: 'event__data__signers[]email', label: 'Signer Email' },
+    { key: 'event__data__signers[]signed_at', label: 'Signer Signed At', type: 'datetime' },
+  ],
+  file_url: { key: 'event__data__file_url', label: 'Signed PDF URL' },
+  file: { key: 'event__data__file', label: 'Signed PDF', type: 'file' },
 };
 
 /**
@@ -37,6 +54,23 @@ export const toReaderEvent = (payload: ReaderEventPayload) => ({
   id: [payload.event.session_id, payload.trigger.matched_event, payload.timestamp].join(':'),
   ...payload,
 });
+
+/**
+ * Copy the signed PDF of a completed signature request into Zapier's file storage, so later steps
+ * can save or attach the file itself. Its link in Apdf expires after a week.
+ */
+export const withSignedFile = async (z: ZObject, readerEvent: ReturnType<typeof toReaderEvent>) => {
+  const fileUrl = readerEvent.event.data?.file_url;
+
+  if (typeof fileUrl !== 'string') {
+    return readerEvent;
+  }
+
+  return {
+    ...readerEvent,
+    event: { ...readerEvent.event, data: { ...readerEvent.event.data, file: await stashFile(z, fileUrl) } },
+  };
+};
 
 /**
  * The documents the trigger is limited to, empty when it watches all of them. A single mapped
@@ -161,7 +195,9 @@ export const defineReaderEventTrigger = (readerEvent: ReaderEvent) =>
         return {};
       },
 
-      perform: (z: ZObject, bundle: Bundle) => [toReaderEvent(bundle.cleanedRequest as ReaderEventPayload)],
+      perform: async (z: ZObject, bundle: Bundle) => [
+        await withSignedFile(z, toReaderEvent(bundle.cleanedRequest as ReaderEventPayload)),
+      ],
 
       // Recent runs carry real payloads. Without any, a sample around one of the user's own
       // documents still lets later steps map a document that exists.

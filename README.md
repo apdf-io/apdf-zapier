@@ -12,7 +12,8 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 **Triggers**
 
 - One trigger per reader event: Document Opened, Downloaded and Printed; Page Viewed, Read and
-  Left; Text Copied; Link Clicked; Form Submitted; Annotation Created, Updated and Deleted. Each
+  Left; Text Copied; Link Clicked; Form Submitted; Annotation Created, Updated and Deleted;
+  Document Signed, Signature Declined and Signing Completed (with the signed PDF as a file). Each
   can be limited to some documents and narrowed by the conditions Apdf supports for that event,
   such as a page number or a minimum completion rate.
 - New Document, a polling trigger.
@@ -21,6 +22,9 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 
 - Documents: create, archive, unarchive, make public, make private, delete.
 - Tracking links: create, activate, deactivate, delete.
+- Signatures: request signatures from recipients, workspace members or the company's automatic
+  approval, with fields placed at anchor texts, on the PDF's signature boxes or by coordinates;
+  cancel a pending request.
 - PDF: create from HTML, convert Office documents, merge (optionally some pages of each file),
   split, compress, convert to images, extract, delete and rotate pages, overlay, underlay,
   extract and search text (with and without OCR), make searchable with OCR, read and fill
@@ -29,8 +33,8 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 
 **Searches**
 
-- Find Document, Find Document Analytics, Find Reading Session, Find Tracking Link (by
-  recipient email), and Find or Create Tracking Link.
+- Find Document, Find Document Analytics, Find Reading Session, Find Signature Request, Find
+  Tracking Link (by recipient email), and Find or Create Tracking Link.
 
 ## How it works
 

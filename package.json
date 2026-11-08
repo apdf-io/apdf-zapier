@@ -12,7 +12,7 @@
     "lint": "prettier --check . && tsc -p tsconfig.test.json"
   },
   "dependencies": {
-    "zapier-platform-core": "19.2.1"
+    "zapier-platform-core": "19.3.0"
   },
   "devDependencies": {
     "@types/node": "^22",

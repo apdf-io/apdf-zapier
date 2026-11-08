@@ -54,6 +54,35 @@ export type Annotation = {
   created_at: string;
 };
 
+/** One signer of a signature request and where they stand. */
+export type SignatureSigner = {
+  type: 'recipient' | 'member' | 'company';
+  role: string;
+  name: string;
+  email: string;
+  status: 'pending' | 'signed' | 'declined';
+  link: string | null;
+  url: string | null;
+  signed_at: string | null;
+  declined_at: string | null;
+  decline_reason: string | null;
+};
+
+/** A request for signatures on a document, with its signers and, once completed, the signed PDF. */
+export type SignatureRequest = {
+  request_id: string;
+  status: 'pending' | 'completed' | 'declined' | 'cancelled';
+  message: string | null;
+  metadata: Record<string, unknown> | null;
+  send_email: boolean;
+  signers: SignatureSigner[];
+  file_url: string | null;
+  signed_file_hash: string | null;
+  created_at: string;
+  completed_at: string | null;
+  cancelled_at: string | null;
+};
+
 /** An automation, of which the triggers only need the ID. */
 export type Automation = {
   id: string;

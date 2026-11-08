@@ -7,10 +7,12 @@ import * as annotationActions from './creates/annotations.js';
 import * as documentActions from './creates/documents.js';
 import * as linkActions from './creates/links.js';
 import * as pdfActions from './creates/pdf/index.js';
+import * as signatureActions from './creates/signatures.js';
 import { readerEvents } from './lib/events.js';
 import { afters, befores } from './middleware.js';
 import * as documentSearches from './searches/documents.js';
 import * as linkSearches from './searches/links.js';
+import * as signatureSearches from './searches/signatures.js';
 import * as listTriggers from './triggers/lists.js';
 import { newDocument } from './triggers/newDocument.js';
 import { defineReaderEventTrigger } from './triggers/readerEvent.js';
@@ -39,10 +41,15 @@ export default defineApp({
     ...Object.values(documentActions),
     ...Object.values(linkActions),
     ...Object.values(annotationActions),
+    ...Object.values(signatureActions),
     ...Object.values(pdfActions),
   ]),
 
-  searches: byKey([...Object.values(documentSearches), ...Object.values(linkSearches)]),
+  searches: byKey([
+    ...Object.values(documentSearches),
+    ...Object.values(linkSearches),
+    ...Object.values(signatureSearches),
+  ]),
 
   searchOrCreates: {
     findTrackingLink: {

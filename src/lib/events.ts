@@ -181,4 +181,55 @@ export const readerEvents: ReaderEvent[] = [
     conditions: PAGE_CONDITIONS,
     sampleData: { annotation_id: 'annot_1776805002364_5uxvr3fcx', page: 4 },
   },
+  {
+    key: 'documentSigned',
+    event: 'signature:signed',
+    label: 'Document Signed',
+    description:
+      'Triggers when a signer signs their part of a document, including an automatic approval by your company. Fires every time.',
+    conditions: SESSION_CONDITIONS,
+    sampleData: {
+      request_id: '39fe0-14d24-714bd',
+      role: 'Client',
+      name: 'Jane Doe',
+      email: 'jane@contoso.com',
+      signed_at: '2026-10-28T09:44:06+00:00',
+      metadata: { deal_id: 'D-42' },
+    },
+  },
+  {
+    key: 'signatureDeclined',
+    event: 'signature:declined',
+    label: 'Signature Declined',
+    description:
+      'Triggers when a signer declines to sign a document, which ends its signature request. Fires every time.',
+    conditions: SESSION_CONDITIONS,
+    sampleData: {
+      request_id: '39fe0-14d24-714bd',
+      role: 'Client',
+      name: 'Jane Doe',
+      email: 'jane@contoso.com',
+      declined_at: '2026-10-28T09:44:06+00:00',
+      decline_reason: 'The price differs from the quote.',
+      metadata: { deal_id: 'D-42' },
+    },
+  },
+  {
+    key: 'signingCompleted',
+    event: 'signature:completed',
+    label: 'Signing Completed',
+    description: 'Triggers when everyone has signed a document and the signed PDF is ready. Fires every time.',
+    conditions: [],
+    sampleData: {
+      request_id: '39fe0-14d24-714bd',
+      completed_at: '2026-10-28T09:44:08+00:00',
+      signers: [
+        { role: 'Client', name: 'Jane Doe', email: 'jane@contoso.com', signed_at: '2026-10-28T09:44:06+00:00' },
+        { role: 'Agency', name: 'Sam Lee', email: 'sam@acme.com', signed_at: '2026-10-28T09:44:06+00:00' },
+      ],
+      file_url: 'https://docs.apdf.io/signed/39fe0-14d24-714bd?expires=1762335945&signature=5d1c0e8f3b9a47e2',
+      file: 'https://docs.apdf.io/signed/39fe0-14d24-714bd?expires=1762335945&signature=5d1c0e8f3b9a47e2',
+      metadata: { deal_id: 'D-42' },
+    },
+  },
 ];
