@@ -1,8 +1,8 @@
 # Apdf for Zapier
 
-The Zapier integration for [Apdf](https://apdf.io), the PDF engagement layer for apps and agents.
-Share a PDF through per-recipient tracking links, start Zaps when someone reads it, and run the
-full Apdf PDF toolset as Zap actions.
+The Zapier integration for [Apdf](https://apdf.io), the PDF API to generate, track and sign
+documents. Create PDFs, share them through per-recipient tracking links, collect signatures with
+an audit trail, and start Zaps when someone reads or signs a document.
 
 Built with the [Zapier Platform CLI](https://docs.zapier.com/platform/build-cli/overview) in
 TypeScript, from the CLI's own `custom-auth` TypeScript template.
@@ -25,7 +25,7 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 - Signatures: request signatures from recipients, workspace members or the company's automatic
   approval, with fields placed at anchor texts, on the PDF's signature boxes or by coordinates;
   cancel a pending request.
-- PDF: create from HTML, convert Office documents, merge (optionally some pages of each file),
+- PDF: generate from HTML, convert Office documents, merge (optionally some pages of each file),
   split, compress, convert to images, extract, delete and rotate pages, overlay, underlay,
   extract and search text (with and without OCR), make searchable with OCR, read and fill
   forms, render forms as images with numbered fields for AI steps, add and remove a password,
@@ -41,7 +41,7 @@ TypeScript, from the CLI's own `custom-auth` TypeScript template.
 - **Authentication** is an Apdf API token, sent as a bearer token. A token belongs to one
   workspace. Connecting calls `GET /me`, and the connection is labelled with the token
   user's email.
-- **Reader event triggers are REST hooks.** Turning a Zap on creates an Apdf automation whose
+- **Reader and signature triggers are REST hooks.** Turning a Zap on creates an Apdf automation whose
   webhook is the Zap's hook URL; turning it off deletes the automation. Apdf evaluates the
   document filter and the conditions before it calls Zapier. Automations need a paid plan
   (Pro and up), so on Hobby the Zap fails to turn on with an upgrade message. Samples in the Zap editor

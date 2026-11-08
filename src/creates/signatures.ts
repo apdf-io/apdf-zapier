@@ -75,7 +75,7 @@ export const requestSignatures = defineCreate({
   display: {
     label: 'Request Signatures',
     description:
-      'Requests signatures on a document. Each signer signs their own part, and once everyone has signed, the signed PDF is made with its audit trail.',
+      'Sends a document for e-signature. Each signer signs their own part, and once everyone has signed, you get the signed PDF with its audit trail.',
   },
   operation: {
     inputFields: [

@@ -1,7 +1,7 @@
 {
   "name": "apdf-zapier",
   "version": "1.3.0",
-  "description": "Zapier integration for Apdf — PDF tracking links, reader analytics and PDF processing",
+  "description": "Zapier integration for Apdf — the PDF API to generate, track and sign documents",
   "scripts": {
     "test": "npm run build && vitest --run",
     "clean": "rimraf ./dist ./build",

@@ -39,7 +39,7 @@ export const getPdfFormFields = definePdfOperation({
 export const fillPdfForm = definePdfOperation({
   key: 'fillPdfForm',
   label: 'Fill PDF Form',
-  description: 'Fills the form fields of a PDF by name and creates the filled PDF.',
+  description: 'Generates a filled PDF from a PDF form, filling its fields by name.',
   path: '/pdf/form/fill',
   inputFields: [
     pdfFileField(),

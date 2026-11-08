@@ -27,7 +27,7 @@ const layoutNumber = (key: string, label: string, helpText: string) => ({
 export const createPdfFromHtml = definePdfOperation({
   key: 'createPdfFromHtml',
   label: 'Create PDF From HTML',
-  description: 'Renders HTML into a PDF.',
+  description: 'Generates a PDF from HTML, such as an invoice, quote or report built in an earlier step.',
   path: '/pdf/file/create',
   inputFields: [
     {
