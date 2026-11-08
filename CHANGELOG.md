@@ -1,3 +1,10 @@
+## 1.3.0
+
+- New triggers: Document Signed, Signature Declined and Signing Completed. Signing Completed includes the signed PDF as a file, ready to save or attach in a later step.
+- New action: Request Signatures, which asks recipients, workspace members or your company's automatic approval to sign their part of a document, with fields placed at an anchor text, on a signature box of the PDF or by coordinates.
+- New action: Cancel Signature Request, which withdraws the pending signature request of a document.
+- New search: Find Signature Request, which finds the latest signature request of a document with who has signed and, once everyone has, the signed PDF.
+
 ## 1.2.0
 
 - New action: Add Comment to Annotation, which adds a comment to an annotation for readers to see in the document: the opening comment if it has none yet, otherwise a reply in its thread. It doesn't start reader event triggers.
