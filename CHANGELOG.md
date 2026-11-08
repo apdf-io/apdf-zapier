@@ -1,3 +1,7 @@
+## 1.3.1
+
+- Clearer descriptions for Create PDF From HTML, Fill PDF Form and Request Signatures.
+
 ## 1.3.0
 
 - New triggers: Document Signed, Signature Declined and Signing Completed. Signing Completed includes the signed PDF as a file, ready to save or attach in a later step.
