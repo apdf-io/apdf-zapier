@@ -248,3 +248,111 @@ describe('PDF operations in a live Zap', () => {
     ).rejects.toThrow(/extract operation/);
   });
 });
+
+/**
+ * The flat fields of a German invoice as a Zap maps them: two lines, one of them under reverse
+ * charge, and a shipping charge.
+ */
+const invoiceInput = (overrides: Record<string, unknown> = {}) => ({
+  file: server.fileUrl('invoice.pdf'),
+  number: 'RE-2026-0042',
+  issue_date: '2026-11-11T00:00:00+01:00',
+  due_date: '2026-11-25T00:00:00+01:00',
+  currency: 'EUR',
+  seller_name: 'Lieferant GmbH',
+  seller_vat_number: 'DE123456789',
+  seller_street: 'Lieferantenstraße 20',
+  seller_postcode: '80333',
+  seller_city: 'München',
+  seller_country: 'DE',
+  buyer_name: 'Kunden AG',
+  buyer_vat_number: 'FR12345678901',
+  buyer_street: 'Rue de la Paix 1',
+  buyer_postcode: '75002',
+  buyer_city: 'Paris',
+  buyer_country: 'FR',
+  iban: 'DE02120300000000202051',
+  payment_terms: 'Payable within 14 days',
+  lines: [
+    { name: 'Consulting', quantity: '8', unit: 'HUR', unit_price: '120', vat_rate: '19' },
+    { name: 'Installation', quantity: '1', unit_price: '500', vat_rate: '0', vat_category: 'reverse_charge' },
+  ],
+  charges: [{ charge_reason: 'Shipping', charge_amount: '4.95', charge_vat_rate: '19' }],
+  vat_exemption_reason: 'Reverse charge',
+  ...overrides,
+});
+
+describe('E-invoices in the Zap editor', () => {
+  it('creates an e-invoice, reads its data back and finds it valid', async () => {
+    const created = await runSample('createEInvoice', invoiceInput());
+
+    expect(created).toEqual(producedFile({ level: 'EN 16931' }));
+
+    const data = await runSample('getEInvoiceData', { file: created.file_url });
+
+    expect(data).toMatchObject({
+      level: 'EN 16931',
+      number: 'RE-2026-0042',
+      issue_date: '2026-11-11',
+      due_date: '2026-11-25',
+      seller: { name: 'Lieferant GmbH', vat_id: 'DE123456789' },
+      buyer: { name: 'Kunden AG', address: { country: 'FR' } },
+      payment: { method: 'credit_transfer', iban: 'DE02120300000000202051', terms: 'Payable within 14 days' },
+      charges: [{ amount: 4.95, reason: 'Shipping' }],
+      totals: { net_total: 1464.95, vat_total: 183.34, gross_total: 1648.29, amount_due: 1648.29 },
+      xml: expect.stringMatching(/^<\?xml/),
+    });
+    expect(data.vat_breakdown).toContainEqual(
+      expect.objectContaining({ category: 'reverse_charge', exemption_reason: 'Reverse charge' }),
+    );
+
+    await expect(runSample('validateEInvoice', { file: created.file_url })).resolves.toMatchObject({
+      valid: true,
+      level: 'EN 16931',
+      errors: [],
+      error_summary: '',
+    });
+  });
+
+  it('ignores optional fields left blank, as Zapier sends them', async () => {
+    const created = await runSample(
+      'createEInvoice',
+      invoiceInput({
+        level: '',
+        type: '',
+        due_date: '',
+        seller_electronic_address: '',
+        seller_contact_name: '',
+        bic: '',
+        discounts: [],
+      }),
+    );
+
+    expect(created).toEqual(producedFile({ level: 'EN 16931' }));
+  });
+
+  it('lists every rule an invalid e-invoice breaks, also as one text', async () => {
+    const result = await runSample('validateEInvoice', { file: server.fileUrl('einvoice-invalid.pdf') });
+
+    expect(result).toMatchObject({
+      valid: false,
+      level: 'EN 16931',
+      errors: [{ source: 'xml', rule: 'BR-CO-16' }],
+      error_summary: expect.stringMatching(/^Amount due for payment/),
+    });
+  });
+
+  it('fails the step with the rules the invoice breaks', async () => {
+    await expect(runSample('createEInvoice', invoiceInput({ level: 'XRECHNUNG' }))).rejects.toThrow(
+      /The e-invoice is not valid\. einvoice: .*Buyer reference/,
+    );
+  });
+});
+
+describe('E-invoices in a live Zap', () => {
+  it('waits for the callback and resumes with the e-invoice', async () => {
+    await expect(runLive('createEInvoice', invoiceInput(), 'einvoice')).resolves.toEqual(
+      producedFile({ level: 'EN 16931' }),
+    );
+  });
+});
