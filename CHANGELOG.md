@@ -1,3 +1,9 @@
+## 1.4.0
+
+- New action: Create E-Invoice, which turns a PDF invoice into a ZUGFeRD / Factur-X e-invoice (EN 16931, XRechnung and more) by embedding the invoice data as XML, with line amounts, VAT breakdown and totals calculated.
+- New action: Get E-Invoice Data, which reads the invoice data of an e-invoice, with its lines as line items and the XML.
+- New action: Validate E-Invoice, which checks an e-invoice against PDF/A and the rules of its profile and lists every violation.
+
 ## 1.3.1
 
 - Clearer descriptions for Create PDF From HTML, Fill PDF Form and Request Signatures.
